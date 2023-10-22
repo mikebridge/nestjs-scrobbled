@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  // postgres13 now has a native uuid function
+  id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email      String  @unique
+  givenname  String?
+  familyname String?
+  password   String
+}
+
+model Scrobble {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  artist      String
+  album       String?
+  track       String
+  datecreated DateTime
+}
+
+model Artist {
+  id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String
+
+  albums Album[]
+
+  @@index([name])
+}
+
+model Album {
+  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  artistId String  @db.Uuid
+  name     String
+  tracks   Track[]
+  artist   Artist  @relation(fields: [artistId], references: [id])
+
+  @@index([name])
+}
+
+model Track {
+  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  albumId String @db.Uuid
+  name    String
+  album   Album  @relation(fields: [albumId], references: [id])
+
+  @@index([name])
+}
