@@ -1,0 +1,27 @@
+type Track {
+  id: String,
+  album: Album!,
+  albumId: String,
+  name: String
+}
+
+type Query {
+  findOneTrack(id: String!): Track
+  allTracks: [Track!]!
+  searchTracks(searchString: String, skip: Int, take: Int): [Track!]!
+}
+
+#input CreateTrackInput {
+#  name: String!
+#}
+#
+#input UpdateTrackInput {
+#  id: Int!
+#  name: String!
+#}
+
+#type Mutation {
+#  createTrack(createTrackInput: CreateTrackInput!): Track!
+#  updateTrack(updateTrackInput: UpdateTrackInput!): Track!
+#  removeTrack(id: Int!): Track
+#}

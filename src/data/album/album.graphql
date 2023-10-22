@@ -1,0 +1,12 @@
+type Album {
+    id: String,
+    name: String,
+    artistId: String,
+    artist: Artist!
+    tracks: [Track!]!
+}
+
+type Query {
+    findOneAlbum(id: String!): Album
+    searchAlbums(searchString: String, skip: Int, take: Int): [Album!]!
+}
